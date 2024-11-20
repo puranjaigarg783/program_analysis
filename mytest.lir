@@ -1,0 +1,7 @@
+fn main() -> int {
+bb0:
+    %1 = const 42
+    %2 = add %1, %1
+    %3 = add %2, %1
+    ret %3
+}

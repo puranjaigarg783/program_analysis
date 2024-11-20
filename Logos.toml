@@ -1,0 +1,6 @@
+skip_patterns = [
+    "[ \t\n\f]+",     # whitespace
+    "//.*\n?",          # C++-style comments
+    "/\*([^*]|\**[^*/])*\*+/",  # C-style comments
+    "/\*([^*]|\*+[^*/])*\*?"    # unclosed C-style comments
+]

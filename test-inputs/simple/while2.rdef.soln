@@ -1,0 +1,7 @@
+bb1.0 -> {bb2.1, entry.0}
+bb1.term -> {bb1.0}
+bb2.0 -> {bb2.1}
+bb2.1 -> {bb2.0}
+bb2.2 -> {bb2.1, bb2.3, entry.1}
+bb2.3 -> {bb2.2}
+bb3.term -> {bb2.3, entry.1}

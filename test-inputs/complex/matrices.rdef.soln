@@ -1,0 +1,9 @@
+bb1.term -> {entry.term}
+bb2.term -> {bb1.term, entry.term}
+bb3.0 -> {bb2.term}
+bb3.term -> {bb1.term, bb2.term, bb3.0, entry.term}
+bb4.0 -> {bb3.term}
+bb4.term -> {bb1.term, bb2.term, bb3.0, bb3.term, entry.term}
+bb5.term -> {bb1.term, bb2.term, bb3.term, bb4.0, bb4.term, entry.term}
+bb6.term -> {bb1.term, bb2.term, bb3.term, bb4.0, bb4.term, bb5.term, entry.term}
+bb7.term -> {bb6.term}

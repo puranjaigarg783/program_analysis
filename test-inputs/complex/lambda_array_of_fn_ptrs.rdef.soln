@@ -1,0 +1,24 @@
+bb1.1 -> {bb1.0}
+bb1.3 -> {bb1.1, bb1.2}
+bb1.5 -> {bb1.4}
+bb1.7 -> {bb1.5, bb1.6}
+bb1.term -> {bb1.0, bb1.3, bb1.7, entry.term}
+bb10.term -> {bb1.3, bb1.7, bb1.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb11.term -> {bb1.0, bb1.3, bb1.7, bb1.term, bb10.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb12.0 -> {bb11.term}
+bb12.term -> {bb1.3, bb1.7, bb1.term, bb10.term, bb11.term, bb12.0, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.0, bb8.term, bb9.term, entry.term}
+bb13.term -> {bb1.3, bb1.7, bb1.term, bb10.term, bb11.term, bb12.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb14.term -> {bb1.3, bb1.7, bb1.term, bb10.term, bb11.term, bb12.term, bb13.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb15.0 -> {bb14.term}
+bb15.term -> {bb1.3, bb1.7, bb1.term, bb10.term, bb11.term, bb12.term, bb13.term, bb14.term, bb15.0, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb16.term -> {bb1.3, bb1.7, bb1.8, bb1.term, bb10.term, bb11.term, bb12.term, bb13.term, bb14.term, bb15.0, bb15.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb17.term -> {bb1.3, bb1.7, bb1.term, bb10.term, bb11.term, bb12.term, bb13.term, bb14.term, bb15.term, bb16.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, bb9.term, entry.term}
+bb2.term -> {bb1.0, bb1.3, bb1.7, bb1.term, entry.term}
+bb3.term -> {bb1.3, bb1.4, bb1.7, bb1.term, bb2.term, entry.term}
+bb4.term -> {bb1.3, bb1.7, bb1.term, bb2.term, bb3.term, entry.term}
+bb5.term -> {bb1.3, bb1.7, bb1.term, bb2.term, bb3.term, bb4.term, entry.term}
+bb6.term -> {bb1.3, bb1.4, bb1.7, bb1.term, bb2.term, bb3.term, bb4.term, bb5.term, entry.term}
+bb7.term -> {bb1.0, bb1.3, bb1.7, bb1.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, entry.term}
+bb8.0 -> {bb7.term}
+bb8.term -> {bb1.0, bb1.3, bb1.7, bb1.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, entry.term}
+bb9.term -> {bb1.0, bb1.3, bb1.7, bb1.term, bb2.term, bb3.term, bb4.term, bb5.term, bb6.term, bb7.term, bb8.term, entry.term}

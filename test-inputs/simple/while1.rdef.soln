@@ -1,0 +1,3 @@
+bb1.0 -> {bb2.0, entry.0}
+bb1.term -> {bb1.0}
+bb3.term -> {bb3.0}

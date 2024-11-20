@@ -1,0 +1,5 @@
+entry.1 -> {entry.0}
+entry.2 -> {entry.1}
+entry.3 -> {entry.0}
+entry.4 -> {entry.2, entry.3}
+entry.term -> {entry.4}

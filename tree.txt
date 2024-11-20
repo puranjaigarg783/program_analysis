@@ -1,0 +1,902 @@
+.
+├── Cargo.lock
+├── Cargo.toml
+├── Logos.toml
+├── bin
+│   ├── analyze.rs
+│   ├── cfc.rs
+│   ├── constants_analysis.rs
+│   ├── constraints_gen.rs
+│   ├── constraints_solve.rs
+│   ├── control.rs
+│   ├── interval_analysis.rs
+│   ├── liri.rs
+│   ├── parse.rs
+│   ├── rdef.rs
+│   ├── slice.rs
+│   ├── slice_tests_generator.rs
+│   ├── taint.rs
+│   ├── testmain.rs
+│   └── unrelated.rs
+├── build-analyses.sh
+├── commons.rs
+├── front_end
+│   ├── ast
+│   │   ├── associated_impl.rs
+│   │   ├── display_impl.rs
+│   │   ├── fromstr_impl.rs
+│   │   └── validate.rs
+│   ├── ast.rs
+│   ├── lexer.rs
+│   ├── lower.rs
+│   ├── mod.rs
+│   ├── parser.rs
+│   ├── tests
+│   │   ├── lex_tests.rs
+│   │   ├── lower_tests
+│   │   │   ├── hidden.rs
+│   │   │   ├── part1_basic.rs
+│   │   │   ├── part1_second_point.rs
+│   │   │   ├── part2_basic.rs
+│   │   │   └── part2_second_point.rs
+│   │   ├── lower_tests.rs
+│   │   ├── parse_tests
+│   │   │   ├── basic_tests.rs
+│   │   │   └── expr_and_complex_tests.rs
+│   │   └── parse_tests.rs
+│   └── tests.rs
+├── interpreter.rs
+├── lib.rs
+├── middle_end
+│   ├── analysis
+│   │   ├── call_graph.rs
+│   │   ├── constant_prop.rs
+│   │   ├── integer_interval.rs
+│   │   ├── liveness.rs
+│   │   ├── reaching_defs.rs
+│   │   └── tests.rs
+│   ├── analysis.rs
+│   ├── analysis_constraints
+│   │   └── constraints_gen.rs
+│   ├── analysis_constraints.rs
+│   ├── analysis_rdef
+│   │   └── reaching_defs.rs
+│   ├── analysis_rdef.rs
+│   ├── analysis_rdef_ptrs
+│   │   └── reaching_defs_ptrs.rs
+│   ├── analysis_rdef_ptrs.rs
+│   ├── constraints
+│   │   ├── constraint_node.rs
+│   │   ├── constraint_solve.rs
+│   │   └── fromstr_impl.rs
+│   ├── constraints.rs
+│   ├── control_analysis
+│   │   └── control.rs
+│   ├── control_analysis.rs
+│   ├── lir
+│   │   ├── associated_impl.rs
+│   │   ├── cfg_dump_impl.rs
+│   │   ├── display_impl.rs
+│   │   ├── fromstr_impl.rs
+│   │   ├── id_type_factories.rs
+│   │   ├── misc_impl.rs
+│   │   └── validate.rs
+│   ├── lir.rs
+│   ├── mod.rs
+│   ├── optimization
+│   │   ├── constant_prop.rs
+│   │   ├── copy_prop.rs
+│   │   ├── dead_store_elimination.rs
+│   │   ├── inlining.rs
+│   │   ├── tests
+│   │   │   ├── constant_prop.rs
+│   │   │   └── inlining.rs
+│   │   └── tests.rs
+│   ├── optimization.rs
+│   ├── slice
+│   │   └── slice_solve.rs
+│   ├── slice.rs
+│   ├── taint
+│   │   └── taint_analysis.rs
+│   └── taint.rs
+├── mytest.lir
+├── mytest.lir.json
+├── run-control.sh
+├── run-rdef.sh
+├── target
+│   ├── CACHEDIR.TAG
+│   └── release
+│       ├── build
+│       │   ├── ahash-7fccbe18d3808c1f
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-7fccbe18d3808c1f
+│       │   │   └── build_script_build-7fccbe18d3808c1f.d
+│       │   ├── ahash-d21900db7e6ac6c1
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── crossbeam-utils-5aca1deb09e39c29
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-5aca1deb09e39c29
+│       │   │   └── build_script_build-5aca1deb09e39c29.d
+│       │   ├── crossbeam-utils-d1de9c610ae94c6c
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── libc-5179de7f1c37215a
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-5179de7f1c37215a
+│       │   │   └── build_script_build-5179de7f1c37215a.d
+│       │   ├── libc-5f8fc4553a78bf72
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── lock_api-20c4e95945cdc75f
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-20c4e95945cdc75f
+│       │   │   └── build_script_build-20c4e95945cdc75f.d
+│       │   ├── lock_api-b5a9a50c6e9cff78
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   │   └── autocfg_adc0f029033c22cd_0.ll
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── parking_lot_core-cf646e92ac0fbb03
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-cf646e92ac0fbb03
+│       │   │   └── build_script_build-cf646e92ac0fbb03.d
+│       │   ├── parking_lot_core-e8b84e854b85b6ed
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── paste-6e007218e3684760
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-6e007218e3684760
+│       │   │   └── build_script_build-6e007218e3684760.d
+│       │   ├── paste-b4f2d796c1323f0d
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── proc-macro2-2a02ceee2d21d432
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-2a02ceee2d21d432
+│       │   │   └── build_script_build-2a02ceee2d21d432.d
+│       │   ├── proc-macro2-398a93ff578e796a
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-398a93ff578e796a
+│       │   │   └── build_script_build-398a93ff578e796a.d
+│       │   ├── proc-macro2-4733d2af4f420f60
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── proc-macro2-f488a612214755d0
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── rayon-core-e6c143c70d51ab34
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-e6c143c70d51ab34
+│       │   │   └── build_script_build-e6c143c70d51ab34.d
+│       │   ├── rayon-core-ed94e52122d197a8
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── serde-4bf1a0e2d0791b74
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── serde-efd074a0f4bd6221
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-efd074a0f4bd6221
+│       │   │   └── build_script_build-efd074a0f4bd6221.d
+│       │   ├── serde_json-2e5cd2481bbde57a
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── serde_json-43a39ece4f8514a8
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-43a39ece4f8514a8
+│       │   │   └── build_script_build-43a39ece4f8514a8.d
+│       │   ├── syn-a414e86ca9d1cac8
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── syn-bc7b6022c3bacab7
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-bc7b6022c3bacab7
+│       │   │   └── build_script_build-bc7b6022c3bacab7.d
+│       │   ├── thiserror-1505608cbf6b4c5a
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── thiserror-a861a4a9581e2f0d
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   └── thiserror-dd7f73013132f3dc
+│       │       ├── build-script-build
+│       │       ├── build_script_build-dd7f73013132f3dc
+│       │       └── build_script_build-dd7f73013132f3dc.d
+│       ├── control
+│       ├── control.d
+│       ├── deps
+│       │   ├── ahash-37faa097c01893a0.d
+│       │   ├── allocator_api2-ef76ffceced83fc8.d
+│       │   ├── anstream-08a19fa3a14b3cd2.d
+│       │   ├── anstyle-c51564301c59568b.d
+│       │   ├── anstyle_parse-2acd52e4d7eeb27b.d
+│       │   ├── anstyle_query-3748ec2f2f09f56d.d
+│       │   ├── ascent-54792581f891327f.d
+│       │   ├── ascent_base-562403794a2df7ba.d
+│       │   ├── ascent_base-821bd97497cd2292.d
+│       │   ├── ascent_macro-2889e1544eb25bdb.d
+│       │   ├── autocfg-b893af90c314e9d6.d
+│       │   ├── beef-5d419118320283f9.d
+│       │   ├── boxcar-f096ac1c838c6938.d
+│       │   ├── cfg_if-ce0e4966b109c383.d
+│       │   ├── clap-91169990e5fa3646.d
+│       │   ├── clap_builder-6bbb7b90ba9305c7.d
+│       │   ├── clap_derive-126365526809c5cb.d
+│       │   ├── clap_lex-507ab95dd5aeaf50.d
+│       │   ├── colorchoice-486c06b8e7961c55.d
+│       │   ├── control-a60bb27d716860a1
+│       │   ├── control-a60bb27d716860a1.d
+│       │   ├── convert_case-7c2118577f6e2d20.d
+│       │   ├── crossbeam_deque-9c7a8fac5e2b4a3a.d
+│       │   ├── crossbeam_epoch-321240d527f51e01.d
+│       │   ├── crossbeam_utils-0446be66faa91feb.d
+│       │   ├── dashmap-ddd6436d39a23614.d
+│       │   ├── derive_more-22a1f4d3033ee13e.d
+│       │   ├── derive_more-8d860078ca4c0e00.d
+│       │   ├── derive_more-9c9a8472c6480adc.d
+│       │   ├── derive_syn_parse-b9dbe37f9aaeab27.d
+│       │   ├── diff-2332e69adff2894c.d
+│       │   ├── duplicate-5562b8b2e644de2b.d
+│       │   ├── either-8f22be25c849b741.d
+│       │   ├── either-9f8903fa1cd52e9b.d
+│       │   ├── equivalent-bfb0c17cfbcfc52f.d
+│       │   ├── fixedbitset-0345fa1ca23d6504.d
+│       │   ├── fnv-a600d878e67a3828.d
+│       │   ├── hashbrown-1d9944624a0f3183.d
+│       │   ├── hashbrown-90bdb00e8220eddf.d
+│       │   ├── hashconsing-75443a984eeeabce.d
+│       │   ├── heck-ead453dfe7b052f1.d
+│       │   ├── indexmap-1769eda4d8718ca8.d
+│       │   ├── instant-56a0f4d33f567312.d
+│       │   ├── is_terminal_polyfill-27e79400401a6796.d
+│       │   ├── itertools-30da6d13978757f1.d
+│       │   ├── itoa-11440bf0e76d9f6d.d
+│       │   ├── lazy_static-052d47c1cb7f557b.d
+│       │   ├── lazy_static-07e818c6eead2962.d
+│       │   ├── lexpr-a314b0b708536d87.d
+│       │   ├── lexpr_macros-f97314624be6d969.d
+│       │   ├── libahash-37faa097c01893a0.rlib
+│       │   ├── libahash-37faa097c01893a0.rmeta
+│       │   ├── liballocator_api2-ef76ffceced83fc8.rlib
+│       │   ├── liballocator_api2-ef76ffceced83fc8.rmeta
+│       │   ├── libanstream-08a19fa3a14b3cd2.rlib
+│       │   ├── libanstream-08a19fa3a14b3cd2.rmeta
+│       │   ├── libanstyle-c51564301c59568b.rlib
+│       │   ├── libanstyle-c51564301c59568b.rmeta
+│       │   ├── libanstyle_parse-2acd52e4d7eeb27b.rlib
+│       │   ├── libanstyle_parse-2acd52e4d7eeb27b.rmeta
+│       │   ├── libanstyle_query-3748ec2f2f09f56d.rlib
+│       │   ├── libanstyle_query-3748ec2f2f09f56d.rmeta
+│       │   ├── libascent-54792581f891327f.rlib
+│       │   ├── libascent-54792581f891327f.rmeta
+│       │   ├── libascent_base-562403794a2df7ba.rlib
+│       │   ├── libascent_base-562403794a2df7ba.rmeta
+│       │   ├── libascent_base-821bd97497cd2292.rlib
+│       │   ├── libascent_base-821bd97497cd2292.rmeta
+│       │   ├── libascent_macro-2889e1544eb25bdb.dylib
+│       │   ├── libautocfg-b893af90c314e9d6.rlib
+│       │   ├── libautocfg-b893af90c314e9d6.rmeta
+│       │   ├── libbeef-5d419118320283f9.rlib
+│       │   ├── libbeef-5d419118320283f9.rmeta
+│       │   ├── libboxcar-f096ac1c838c6938.rlib
+│       │   ├── libboxcar-f096ac1c838c6938.rmeta
+│       │   ├── libc-917e86b8c0ab3b8a.d
+│       │   ├── libcfg_if-ce0e4966b109c383.rlib
+│       │   ├── libcfg_if-ce0e4966b109c383.rmeta
+│       │   ├── libclap-91169990e5fa3646.rlib
+│       │   ├── libclap-91169990e5fa3646.rmeta
+│       │   ├── libclap_builder-6bbb7b90ba9305c7.rlib
+│       │   ├── libclap_builder-6bbb7b90ba9305c7.rmeta
+│       │   ├── libclap_derive-126365526809c5cb.dylib
+│       │   ├── libclap_lex-507ab95dd5aeaf50.rlib
+│       │   ├── libclap_lex-507ab95dd5aeaf50.rmeta
+│       │   ├── libcolorchoice-486c06b8e7961c55.rlib
+│       │   ├── libcolorchoice-486c06b8e7961c55.rmeta
+│       │   ├── libconvert_case-7c2118577f6e2d20.rlib
+│       │   ├── libconvert_case-7c2118577f6e2d20.rmeta
+│       │   ├── libcrossbeam_deque-9c7a8fac5e2b4a3a.rlib
+│       │   ├── libcrossbeam_deque-9c7a8fac5e2b4a3a.rmeta
+│       │   ├── libcrossbeam_epoch-321240d527f51e01.rlib
+│       │   ├── libcrossbeam_epoch-321240d527f51e01.rmeta
+│       │   ├── libcrossbeam_utils-0446be66faa91feb.rlib
+│       │   ├── libcrossbeam_utils-0446be66faa91feb.rmeta
+│       │   ├── libdashmap-ddd6436d39a23614.rlib
+│       │   ├── libdashmap-ddd6436d39a23614.rmeta
+│       │   ├── libderive_more-22a1f4d3033ee13e.dylib
+│       │   ├── libderive_more-8d860078ca4c0e00.dylib
+│       │   ├── libderive_more-9c9a8472c6480adc.dylib
+│       │   ├── libderive_syn_parse-b9dbe37f9aaeab27.dylib
+│       │   ├── libdiff-2332e69adff2894c.rlib
+│       │   ├── libdiff-2332e69adff2894c.rmeta
+│       │   ├── libduplicate-5562b8b2e644de2b.dylib
+│       │   ├── libeither-8f22be25c849b741.rlib
+│       │   ├── libeither-8f22be25c849b741.rmeta
+│       │   ├── libeither-9f8903fa1cd52e9b.rlib
+│       │   ├── libeither-9f8903fa1cd52e9b.rmeta
+│       │   ├── libequivalent-bfb0c17cfbcfc52f.rlib
+│       │   ├── libequivalent-bfb0c17cfbcfc52f.rmeta
+│       │   ├── libfixedbitset-0345fa1ca23d6504.rlib
+│       │   ├── libfixedbitset-0345fa1ca23d6504.rmeta
+│       │   ├── libfnv-a600d878e67a3828.rlib
+│       │   ├── libfnv-a600d878e67a3828.rmeta
+│       │   ├── libhashbrown-1d9944624a0f3183.rlib
+│       │   ├── libhashbrown-1d9944624a0f3183.rmeta
+│       │   ├── libhashbrown-90bdb00e8220eddf.rlib
+│       │   ├── libhashbrown-90bdb00e8220eddf.rmeta
+│       │   ├── libhashconsing-75443a984eeeabce.rlib
+│       │   ├── libhashconsing-75443a984eeeabce.rmeta
+│       │   ├── libheck-ead453dfe7b052f1.rlib
+│       │   ├── libheck-ead453dfe7b052f1.rmeta
+│       │   ├── libindexmap-1769eda4d8718ca8.rlib
+│       │   ├── libindexmap-1769eda4d8718ca8.rmeta
+│       │   ├── libinstant-56a0f4d33f567312.rlib
+│       │   ├── libinstant-56a0f4d33f567312.rmeta
+│       │   ├── libis_terminal_polyfill-27e79400401a6796.rlib
+│       │   ├── libis_terminal_polyfill-27e79400401a6796.rmeta
+│       │   ├── libitertools-30da6d13978757f1.rlib
+│       │   ├── libitertools-30da6d13978757f1.rmeta
+│       │   ├── libitoa-11440bf0e76d9f6d.rlib
+│       │   ├── libitoa-11440bf0e76d9f6d.rmeta
+│       │   ├── liblazy_static-052d47c1cb7f557b.rlib
+│       │   ├── liblazy_static-052d47c1cb7f557b.rmeta
+│       │   ├── liblazy_static-07e818c6eead2962.rlib
+│       │   ├── liblazy_static-07e818c6eead2962.rmeta
+│       │   ├── liblexpr-a314b0b708536d87.rlib
+│       │   ├── liblexpr-a314b0b708536d87.rmeta
+│       │   ├── liblexpr_macros-f97314624be6d969.dylib
+│       │   ├── liblibc-917e86b8c0ab3b8a.rlib
+│       │   ├── liblibc-917e86b8c0ab3b8a.rmeta
+│       │   ├── liblock_api-ed51b1d63a869f19.rlib
+│       │   ├── liblock_api-ed51b1d63a869f19.rmeta
+│       │   ├── liblogos-7cb925b4ee35f06c.rlib
+│       │   ├── liblogos-7cb925b4ee35f06c.rmeta
+│       │   ├── liblogos-83e8f37add6f0141.rlib
+│       │   ├── liblogos-83e8f37add6f0141.rmeta
+│       │   ├── liblogos-f9dfa81e5217713d.rlib
+│       │   ├── liblogos-f9dfa81e5217713d.rmeta
+│       │   ├── liblogos_codegen-f753db209c18c75d.rlib
+│       │   ├── liblogos_codegen-f753db209c18c75d.rmeta
+│       │   ├── liblogos_codegen-fb3c9eb1be78db66.rlib
+│       │   ├── liblogos_codegen-fb3c9eb1be78db66.rmeta
+│       │   ├── liblogos_derive-8ec32e54658f01f9.dylib
+│       │   ├── liblogos_derive-c079b3386dee82e0.dylib
+│       │   ├── liblogos_derive-c87b1c76b742404e.dylib
+│       │   ├── libmemchr-49c94ad5ea52f2e4.rlib
+│       │   ├── libmemchr-49c94ad5ea52f2e4.rmeta
+│       │   ├── libmemchr-d9e6827b5e4ca6a6.rlib
+│       │   ├── libmemchr-d9e6827b5e4ca6a6.rmeta
+│       │   ├── libmemchr-ec6bf83e24038517.rlib
+│       │   ├── libmemchr-ec6bf83e24038517.rmeta
+│       │   ├── libonce_cell-80497207e6c7f7d7.rlib
+│       │   ├── libonce_cell-80497207e6c7f7d7.rmeta
+│       │   ├── libonce_cell-8611d313615a6333.rlib
+│       │   ├── libonce_cell-8611d313615a6333.rmeta
+│       │   ├── liboptimization-aea8b166d5d3ac9a.rlib
+│       │   ├── liboptimization-aea8b166d5d3ac9a.rmeta
+│       │   ├── libparking_lot_core-0c1b38a601a47796.rlib
+│       │   ├── libparking_lot_core-0c1b38a601a47796.rmeta
+│       │   ├── libpaste-416256471f845dd4.dylib
+│       │   ├── libpest-16af99219a874806.rlib
+│       │   ├── libpest-16af99219a874806.rmeta
+│       │   ├── libpest-2ad5008d034353ad.rlib
+│       │   ├── libpest-2ad5008d034353ad.rmeta
+│       │   ├── libpest-54f7547f1013356a.rlib
+│       │   ├── libpest-54f7547f1013356a.rmeta
+│       │   ├── libpest-652430d384c64038.rlib
+│       │   ├── libpest-652430d384c64038.rmeta
+│       │   ├── libpest-77dacd040d44c282.rlib
+│       │   ├── libpest-77dacd040d44c282.rmeta
+│       │   ├── libpest-c8d79272ac2bc391.rlib
+│       │   ├── libpest-c8d79272ac2bc391.rmeta
+│       │   ├── libpest_derive-738184ef8b6f6ad2.dylib
+│       │   ├── libpest_derive-c2d4bca77f9269ce.dylib
+│       │   ├── libpest_derive-cb5d3809673babff.dylib
+│       │   ├── libpest_generator-304cee403033deaa.rlib
+│       │   ├── libpest_generator-304cee403033deaa.rmeta
+│       │   ├── libpest_generator-48ca61a56b80019c.rlib
+│       │   ├── libpest_generator-48ca61a56b80019c.rmeta
+│       │   ├── libpest_generator-f14f721896586db6.rlib
+│       │   ├── libpest_generator-f14f721896586db6.rmeta
+│       │   ├── libpest_meta-3ff10e3211cf326e.rlib
+│       │   ├── libpest_meta-3ff10e3211cf326e.rmeta
+│       │   ├── libpest_meta-8c0005781533ba3d.rlib
+│       │   ├── libpest_meta-8c0005781533ba3d.rmeta
+│       │   ├── libpest_meta-ace53e2c6a2c0737.rlib
+│       │   ├── libpest_meta-ace53e2c6a2c0737.rmeta
+│       │   ├── libpetgraph-9766a8c1de443410.rlib
+│       │   ├── libpetgraph-9766a8c1de443410.rmeta
+│       │   ├── libpretty_assertions-db70e5cec935a13d.rlib
+│       │   ├── libpretty_assertions-db70e5cec935a13d.rmeta
+│       │   ├── libproc_macro2-5e94506b81e72779.rlib
+│       │   ├── libproc_macro2-5e94506b81e72779.rmeta
+│       │   ├── libproc_macro2-d02f76b65fbac765.rlib
+│       │   ├── libproc_macro2-d02f76b65fbac765.rmeta
+│       │   ├── libquote-842363a2c4aa2885.rlib
+│       │   ├── libquote-842363a2c4aa2885.rmeta
+│       │   ├── libquote-db3f74e91c8134ee.rlib
+│       │   ├── libquote-db3f74e91c8134ee.rmeta
+│       │   ├── librayon-2c431cf0a95ed510.rlib
+│       │   ├── librayon-2c431cf0a95ed510.rmeta
+│       │   ├── librayon_core-a4cda3069ca3c53d.rlib
+│       │   ├── librayon_core-a4cda3069ca3c53d.rmeta
+│       │   ├── libregex_syntax-54819311c4a05217.rlib
+│       │   ├── libregex_syntax-54819311c4a05217.rmeta
+│       │   ├── libregex_syntax-cdb67fb7b3cd70e9.rlib
+│       │   ├── libregex_syntax-cdb67fb7b3cd70e9.rmeta
+│       │   ├── librustc_hash-2e89c8579a21886b.rlib
+│       │   ├── librustc_hash-2e89c8579a21886b.rmeta
+│       │   ├── libryu-50799f300a7c0c95.rlib
+│       │   ├── libryu-50799f300a7c0c95.rmeta
+│       │   ├── libscopeguard-567907f55149b73f.rlib
+│       │   ├── libscopeguard-567907f55149b73f.rmeta
+│       │   ├── libserde-18ac5c8d4e4c31be.rlib
+│       │   ├── libserde-18ac5c8d4e4c31be.rmeta
+│       │   ├── libserde-3f97ba94448f745c.rlib
+│       │   ├── libserde-3f97ba94448f745c.rmeta
+│       │   ├── libserde-abc1b4d9e4294d66.rlib
+│       │   ├── libserde-abc1b4d9e4294d66.rmeta
+│       │   ├── libserde-d976720c658491be.rlib
+│       │   ├── libserde-d976720c658491be.rmeta
+│       │   ├── libserde_derive-4327d83951c36148.dylib
+│       │   ├── libserde_derive-52d3db09f4aca797.dylib
+│       │   ├── libserde_derive-5e701bd253b22fb6.dylib
+│       │   ├── libserde_derive-8bae94fcbcfb2b5a.dylib
+│       │   ├── libserde_json-43e1c926e8754ca4.rlib
+│       │   ├── libserde_json-43e1c926e8754ca4.rmeta
+│       │   ├── libserde_json-6621e317a2522d91.rlib
+│       │   ├── libserde_json-6621e317a2522d91.rmeta
+│       │   ├── libserde_json-ace4410f1efd0c35.rlib
+│       │   ├── libserde_json-ace4410f1efd0c35.rmeta
+│       │   ├── libserde_json-fb16a6185e91c666.rlib
+│       │   ├── libserde_json-fb16a6185e91c666.rmeta
+│       │   ├── libserde_lexpr-9dd9623a0c23a8e2.rlib
+│       │   ├── libserde_lexpr-9dd9623a0c23a8e2.rmeta
+│       │   ├── libserde_lexpr-dae822afb06ddab6.rlib
+│       │   ├── libserde_lexpr-dae822afb06ddab6.rmeta
+│       │   ├── libsmallvec-bc1ce5e4c82272dc.rlib
+│       │   ├── libsmallvec-bc1ce5e4c82272dc.rmeta
+│       │   ├── libstrsim-746bd6c8aaf8537c.rlib
+│       │   ├── libstrsim-746bd6c8aaf8537c.rmeta
+│       │   ├── libsyn-04c19cdcdd9cb399.rlib
+│       │   ├── libsyn-04c19cdcdd9cb399.rmeta
+│       │   ├── libsyn-487a2652abf6d86c.rlib
+│       │   ├── libsyn-487a2652abf6d86c.rmeta
+│       │   ├── libsyn-72e890eee66ae2ff.rlib
+│       │   ├── libsyn-72e890eee66ae2ff.rmeta
+│       │   ├── libsyn-d2775407ebec1d4b.rlib
+│       │   ├── libsyn-d2775407ebec1d4b.rmeta
+│       │   ├── libsyn-f82425b0e2f2ef39.rlib
+│       │   ├── libsyn-f82425b0e2f2ef39.rmeta
+│       │   ├── libthiserror-6721c6765d69a721.rlib
+│       │   ├── libthiserror-6721c6765d69a721.rmeta
+│       │   ├── libthiserror-916abbfc8e5ac1b3.rlib
+│       │   ├── libthiserror-916abbfc8e5ac1b3.rmeta
+│       │   ├── libthiserror-a833e4f64b500a27.rlib
+│       │   ├── libthiserror-a833e4f64b500a27.rmeta
+│       │   ├── libthiserror-ecba71f805923af6.rlib
+│       │   ├── libthiserror-ecba71f805923af6.rmeta
+│       │   ├── libthiserror-fb982e58910453ee.rlib
+│       │   ├── libthiserror-fb982e58910453ee.rmeta
+│       │   ├── libthiserror-fcfadfbcca9cffdd.rlib
+│       │   ├── libthiserror-fcfadfbcca9cffdd.rmeta
+│       │   ├── libthiserror_impl-405648b5d40356ab.dylib
+│       │   ├── libthiserror_impl-ab31cf0df717bbe4.dylib
+│       │   ├── libthiserror_impl-d1e691694ed3220c.dylib
+│       │   ├── libucd_trie-5b4d739325c4b8ca.rlib
+│       │   ├── libucd_trie-5b4d739325c4b8ca.rmeta
+│       │   ├── libucd_trie-dd4a1265750c7dbe.rlib
+│       │   ├── libucd_trie-dd4a1265750c7dbe.rmeta
+│       │   ├── libunicode_ident-96e1236d2f531283.rlib
+│       │   ├── libunicode_ident-96e1236d2f531283.rmeta
+│       │   ├── libutf8parse-9cbd1971a1ee4b83.rlib
+│       │   ├── libutf8parse-9cbd1971a1ee4b83.rmeta
+│       │   ├── libversion_check-7ff950f8ee2defda.rlib
+│       │   ├── libversion_check-7ff950f8ee2defda.rmeta
+│       │   ├── libyansi-399dc27f7569906f.rlib
+│       │   ├── libyansi-399dc27f7569906f.rmeta
+│       │   ├── libzerocopy-4cfadc3907320aba.rlib
+│       │   ├── libzerocopy-4cfadc3907320aba.rmeta
+│       │   ├── lock_api-ed51b1d63a869f19.d
+│       │   ├── logos-7cb925b4ee35f06c.d
+│       │   ├── logos-83e8f37add6f0141.d
+│       │   ├── logos-f9dfa81e5217713d.d
+│       │   ├── logos_codegen-f753db209c18c75d.d
+│       │   ├── logos_codegen-fb3c9eb1be78db66.d
+│       │   ├── logos_derive-8ec32e54658f01f9.d
+│       │   ├── logos_derive-c079b3386dee82e0.d
+│       │   ├── logos_derive-c87b1c76b742404e.d
+│       │   ├── memchr-49c94ad5ea52f2e4.d
+│       │   ├── memchr-d9e6827b5e4ca6a6.d
+│       │   ├── memchr-ec6bf83e24038517.d
+│       │   ├── once_cell-80497207e6c7f7d7.d
+│       │   ├── once_cell-8611d313615a6333.d
+│       │   ├── optimization-3bcb3505330ae73c.d
+│       │   ├── optimization-aea8b166d5d3ac9a.d
+│       │   ├── optimization-b7122f309b816da5.d
+│       │   ├── optimization-c724be8849b272c8.d
+│       │   ├── optimization-d62f4c0c2b856a2c.d
+│       │   ├── optimization-eee311249714f55b.d
+│       │   ├── parking_lot_core-0c1b38a601a47796.d
+│       │   ├── paste-416256471f845dd4.d
+│       │   ├── pest-16af99219a874806.d
+│       │   ├── pest-2ad5008d034353ad.d
+│       │   ├── pest-54f7547f1013356a.d
+│       │   ├── pest-652430d384c64038.d
+│       │   ├── pest-77dacd040d44c282.d
+│       │   ├── pest-c8d79272ac2bc391.d
+│       │   ├── pest_derive-738184ef8b6f6ad2.d
+│       │   ├── pest_derive-c2d4bca77f9269ce.d
+│       │   ├── pest_derive-cb5d3809673babff.d
+│       │   ├── pest_generator-304cee403033deaa.d
+│       │   ├── pest_generator-48ca61a56b80019c.d
+│       │   ├── pest_generator-f14f721896586db6.d
+│       │   ├── pest_meta-3ff10e3211cf326e.d
+│       │   ├── pest_meta-8c0005781533ba3d.d
+│       │   ├── pest_meta-ace53e2c6a2c0737.d
+│       │   ├── petgraph-9766a8c1de443410.d
+│       │   ├── pretty_assertions-db70e5cec935a13d.d
+│       │   ├── proc_macro2-5e94506b81e72779.d
+│       │   ├── proc_macro2-d02f76b65fbac765.d
+│       │   ├── quote-842363a2c4aa2885.d
+│       │   ├── quote-db3f74e91c8134ee.d
+│       │   ├── rayon-2c431cf0a95ed510.d
+│       │   ├── rayon_core-a4cda3069ca3c53d.d
+│       │   ├── rdef-cf82f0cbe0490132
+│       │   ├── rdef-cf82f0cbe0490132.d
+│       │   ├── regex_syntax-54819311c4a05217.d
+│       │   ├── regex_syntax-cdb67fb7b3cd70e9.d
+│       │   ├── rustc_hash-2e89c8579a21886b.d
+│       │   ├── ryu-50799f300a7c0c95.d
+│       │   ├── scopeguard-567907f55149b73f.d
+│       │   ├── serde-18ac5c8d4e4c31be.d
+│       │   ├── serde-3f97ba94448f745c.d
+│       │   ├── serde-abc1b4d9e4294d66.d
+│       │   ├── serde-d976720c658491be.d
+│       │   ├── serde_derive-4327d83951c36148.d
+│       │   ├── serde_derive-52d3db09f4aca797.d
+│       │   ├── serde_derive-5e701bd253b22fb6.d
+│       │   ├── serde_derive-8bae94fcbcfb2b5a.d
+│       │   ├── serde_json-43e1c926e8754ca4.d
+│       │   ├── serde_json-6621e317a2522d91.d
+│       │   ├── serde_json-ace4410f1efd0c35.d
+│       │   ├── serde_json-fb16a6185e91c666.d
+│       │   ├── serde_lexpr-9dd9623a0c23a8e2.d
+│       │   ├── serde_lexpr-dae822afb06ddab6.d
+│       │   ├── smallvec-bc1ce5e4c82272dc.d
+│       │   ├── strsim-746bd6c8aaf8537c.d
+│       │   ├── syn-04c19cdcdd9cb399.d
+│       │   ├── syn-487a2652abf6d86c.d
+│       │   ├── syn-72e890eee66ae2ff.d
+│       │   ├── syn-d2775407ebec1d4b.d
+│       │   ├── syn-f82425b0e2f2ef39.d
+│       │   ├── thiserror-6721c6765d69a721.d
+│       │   ├── thiserror-916abbfc8e5ac1b3.d
+│       │   ├── thiserror-a833e4f64b500a27.d
+│       │   ├── thiserror-ecba71f805923af6.d
+│       │   ├── thiserror-fb982e58910453ee.d
+│       │   ├── thiserror-fcfadfbcca9cffdd.d
+│       │   ├── thiserror_impl-405648b5d40356ab.d
+│       │   ├── thiserror_impl-ab31cf0df717bbe4.d
+│       │   ├── thiserror_impl-d1e691694ed3220c.d
+│       │   ├── ucd_trie-5b4d739325c4b8ca.d
+│       │   ├── ucd_trie-dd4a1265750c7dbe.d
+│       │   ├── unicode_ident-96e1236d2f531283.d
+│       │   ├── utf8parse-9cbd1971a1ee4b83.d
+│       │   ├── version_check-7ff950f8ee2defda.d
+│       │   ├── yansi-399dc27f7569906f.d
+│       │   └── zerocopy-4cfadc3907320aba.d
+│       ├── examples
+│       ├── incremental
+│       ├── liboptimization.d
+│       ├── liboptimization.rlib
+│       ├── rdef
+│       └── rdef.d
+├── test-inputs
+│   ├── complex
+│   │   ├── binary_trees.cb
+│   │   ├── binary_trees.dominance.soln
+│   │   ├── binary_trees.lir
+│   │   ├── binary_trees.lir.json
+│   │   ├── binary_trees.rdef.soln
+│   │   ├── draw.cb
+│   │   ├── draw.dominance.soln
+│   │   ├── draw.lir
+│   │   ├── draw.lir.json
+│   │   ├── draw.rdef.soln
+│   │   ├── heap_array_based.cb
+│   │   ├── heap_array_based.dominance.soln
+│   │   ├── heap_array_based.lir
+│   │   ├── heap_array_based.lir.json
+│   │   ├── heap_array_based.rdef.soln
+│   │   ├── heap_ptr_based.cb
+│   │   ├── heap_ptr_based.dominance.soln
+│   │   ├── heap_ptr_based.lir
+│   │   ├── heap_ptr_based.lir.json
+│   │   ├── heap_ptr_based.rdef.soln
+│   │   ├── lambda.cb
+│   │   ├── lambda.dominance.soln
+│   │   ├── lambda.lir
+│   │   ├── lambda.lir.json
+│   │   ├── lambda.rdef.soln
+│   │   ├── lambda_array_of_fn_ptrs.cb
+│   │   ├── lambda_array_of_fn_ptrs.dominance.soln
+│   │   ├── lambda_array_of_fn_ptrs.lir
+│   │   ├── lambda_array_of_fn_ptrs.lir.json
+│   │   ├── lambda_array_of_fn_ptrs.rdef.soln
+│   │   ├── matrices.cb
+│   │   ├── matrices.dominance.soln
+│   │   ├── matrices.lir
+│   │   ├── matrices.lir.json
+│   │   ├── matrices.rdef.soln
+│   │   ├── tortoise_and_hare.cb
+│   │   ├── tortoise_and_hare.dominance.soln
+│   │   ├── tortoise_and_hare.lir
+│   │   ├── tortoise_and_hare.lir.json
+│   │   ├── tortoise_and_hare.rdef.soln
+│   │   ├── union_find.cb
+│   │   ├── union_find.dominance.soln
+│   │   ├── union_find.lir
+│   │   ├── union_find.lir.json
+│   │   └── union_find.rdef.soln
+│   └── simple
+│       ├── addrof.cb
+│       ├── addrof.dominance.soln
+│       ├── addrof.lir
+│       ├── addrof.lir.json
+│       ├── addrof.rdef.soln
+│       ├── alloc_cmp.cb
+│       ├── alloc_cmp.dominance.soln
+│       ├── alloc_cmp.lir
+│       ├── alloc_cmp.lir.json
+│       ├── alloc_cmp.rdef.soln
+│       ├── alloc_invalid.cb
+│       ├── alloc_invalid.dominance.soln
+│       ├── alloc_invalid.lir
+│       ├── alloc_invalid.lir.json
+│       ├── alloc_invalid.rdef.soln
+│       ├── alloc_load_store.cb
+│       ├── alloc_load_store.dominance.soln
+│       ├── alloc_load_store.lir
+│       ├── alloc_load_store.lir.json
+│       ├── alloc_load_store.rdef.soln
+│       ├── alloc_load_store2.cb
+│       ├── alloc_load_store2.dominance.soln
+│       ├── alloc_load_store2.lir
+│       ├── alloc_load_store2.lir.json
+│       ├── alloc_load_store2.rdef.soln
+│       ├── arith_div_nonzero.cb
+│       ├── arith_div_nonzero.dominance.soln
+│       ├── arith_div_nonzero.lir
+│       ├── arith_div_nonzero.lir.json
+│       ├── arith_div_nonzero.rdef.soln
+│       ├── arith_non_div.cb
+│       ├── arith_non_div.dominance.soln
+│       ├── arith_non_div.lir
+│       ├── arith_non_div.lir.json
+│       ├── arith_non_div.rdef.soln
+│       ├── arith_non_div2.cb
+│       ├── arith_non_div2.dominance.soln
+│       ├── arith_non_div2.lir
+│       ├── arith_non_div2.lir.json
+│       ├── arith_non_div2.rdef.soln
+│       ├── branch.cb
+│       ├── branch.dominance.soln
+│       ├── branch.lir
+│       ├── branch.lir.json
+│       ├── branch.rdef.soln
+│       ├── call.cb
+│       ├── call.dominance.soln
+│       ├── call.lir
+│       ├── call.lir.json
+│       ├── call.rdef.soln
+│       ├── call_dir_few_args.cb
+│       ├── call_dir_few_args.dominance.soln
+│       ├── call_dir_few_args.lir
+│       ├── call_dir_few_args.lir.json
+│       ├── call_dir_few_args.rdef.soln
+│       ├── call_dir_many_args.cb
+│       ├── call_dir_many_args.dominance.soln
+│       ├── call_dir_many_args.lir
+│       ├── call_dir_many_args.lir.json
+│       ├── call_dir_many_args.rdef.soln
+│       ├── call_dir_one_arg.cb
+│       ├── call_dir_one_arg.dominance.soln
+│       ├── call_dir_one_arg.lir
+│       ├── call_dir_one_arg.lir.json
+│       ├── call_dir_one_arg.rdef.soln
+│       ├── call_dir_only_return.cb
+│       ├── call_dir_only_return.dominance.soln
+│       ├── call_dir_only_return.lir
+│       ├── call_dir_only_return.lir.json
+│       ├── call_dir_only_return.rdef.soln
+│       ├── call_dir_simple.cb
+│       ├── call_dir_simple.dominance.soln
+│       ├── call_dir_simple.lir
+│       ├── call_dir_simple.lir.json
+│       ├── call_dir_simple.rdef.soln
+│       ├── call_ext.cb
+│       ├── call_ext.dominance.soln
+│       ├── call_ext.lir
+│       ├── call_ext.lir.json
+│       ├── call_ext.rdef.soln
+│       ├── call_ptr_args.cb
+│       ├── call_ptr_args.dominance.soln
+│       ├── call_ptr_args.lir
+│       ├── call_ptr_args.lir.json
+│       ├── call_ptr_args.rdef.soln
+│       ├── cmp.S
+│       ├── cmp.cb
+│       ├── cmp.dominance.soln
+│       ├── cmp.lir
+│       ├── cmp.lir.json
+│       ├── cmp.rdef.soln
+│       ├── fib1.cb
+│       ├── fib1.dominance.soln
+│       ├── fib1.lir
+│       ├── fib1.lir.json
+│       ├── fib1.rdef.soln
+│       ├── fib2.cb
+│       ├── fib2.dominance.soln
+│       ├── fib2.lir
+│       ├── fib2.lir.json
+│       ├── fib2.rdef.soln
+│       ├── gep-oob1.cb
+│       ├── gep-oob1.dominance.soln
+│       ├── gep-oob1.lir
+│       ├── gep-oob1.lir.json
+│       ├── gep-oob1.rdef.soln
+│       ├── gep-oob2.cb
+│       ├── gep-oob2.dominance.soln
+│       ├── gep-oob2.lir
+│       ├── gep-oob2.lir.json
+│       ├── gep-oob2.rdef.soln
+│       ├── gep.cb
+│       ├── gep.dominance.soln
+│       ├── gep.lir
+│       ├── gep.lir.json
+│       ├── gep.rdef.soln
+│       ├── gfp.cb
+│       ├── gfp.dominance.soln
+│       ├── gfp.lir
+│       ├── gfp.lir.json
+│       ├── gfp.rdef.soln
+│       ├── gfp2.cb
+│       ├── gfp2.dominance.soln
+│       ├── gfp2.lir
+│       ├── gfp2.lir.json
+│       ├── gfp2.rdef.soln
+│       ├── if1.cb
+│       ├── if1.dominance.soln
+│       ├── if1.lir
+│       ├── if1.lir.json
+│       ├── if1.rdef.soln
+│       ├── if2.cb
+│       ├── if2.dominance.soln
+│       ├── if2.lir
+│       ├── if2.lir.json
+│       ├── if2.rdef.soln
+│       ├── if3.cb
+│       ├── if3.dominance.soln
+│       ├── if3.lir
+│       ├── if3.lir.json
+│       ├── if3.rdef.soln
+│       ├── if4.cb
+│       ├── if4.dominance.soln
+│       ├── if4.lir
+│       ├── if4.lir.json
+│       ├── if4.rdef.soln
+│       ├── linked_list.cb
+│       ├── linked_list.dominance.soln
+│       ├── linked_list.lir
+│       ├── linked_list.lir.json
+│       ├── linked_list.rdef.soln
+│       ├── multi-call.cb
+│       ├── multi-call.dominance.soln
+│       ├── multi-call.lir
+│       ├── multi-call.lir.json
+│       ├── multi-call.rdef.soln
+│       ├── nested-call.cb
+│       ├── nested-call.dominance.soln
+│       ├── nested-call.lir
+│       ├── nested-call.lir.json
+│       ├── nested-call.rdef.soln
+│       ├── nested_array.cb
+│       ├── nested_array.dominance.soln
+│       ├── nested_array.lir
+│       ├── nested_array.lir.json
+│       ├── nested_array.rdef.soln
+│       ├── nested_call_structs.cb
+│       ├── nested_call_structs.dominance.soln
+│       ├── nested_call_structs.lir
+│       ├── nested_call_structs.lir.json
+│       ├── nested_call_structs.rdef.soln
+│       ├── nested_field.cb
+│       ├── nested_field.dominance.soln
+│       ├── nested_field.lir
+│       ├── nested_field.lir.json
+│       ├── nested_field.rdef.soln
+│       ├── nested_ptr.cb
+│       ├── nested_ptr.dominance.soln
+│       ├── nested_ptr.lir
+│       ├── nested_ptr.lir.json
+│       ├── nested_ptr.rdef.soln
+│       ├── new_array.cb
+│       ├── new_array.dominance.soln
+│       ├── new_array.lir
+│       ├── new_array.lir.json
+│       ├── new_array.rdef.soln
+│       ├── new_deref.cb
+│       ├── new_deref.dominance.soln
+│       ├── new_deref.lir
+│       ├── new_deref.lir.json
+│       ├── new_deref.rdef.soln
+│       ├── new_field.cb
+│       ├── new_field.dominance.soln
+│       ├── new_field.lir
+│       ├── new_field.lir.json
+│       ├── new_field.rdef.soln
+│       ├── recur.cb
+│       ├── recur.dominance.soln
+│       ├── recur.lir
+│       ├── recur.lir.json
+│       ├── recur.rdef.soln
+│       ├── while1.cb
+│       ├── while1.dominance.soln
+│       ├── while1.lir
+│       ├── while1.lir.json
+│       ├── while1.rdef.soln
+│       ├── while2.cb
+│       ├── while2.dominance.soln
+│       ├── while2.lir
+│       ├── while2.lir.json
+│       ├── while2.rdef.soln
+│       ├── while3.cb
+│       ├── while3.dominance.soln
+│       ├── while3.lir
+│       ├── while3.lir.json
+│       └── while3.rdef.soln
+└── tree.txt
+
+69 directories, 831 files

@@ -1,0 +1,10 @@
+bb1 -> {bb1}
+bb2 -> {bb1}
+bb3 -> {}
+bb4 -> {bb4}
+bb5 -> {bb4}
+bb6 -> {}
+bb7 -> {bb4}
+bb8 -> {bb7}
+entry -> {}
+
