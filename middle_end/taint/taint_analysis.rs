@@ -1,286 +1,194 @@
-//! Intraprocedural reaching definitions analysis.
-
+use std::collections::{BTreeMap as Map, BTreeSet as Set};
+use crate::middle_end::analysis::*;
+use crate::middle_end::lir::*;
+use std::fmt::Display;
 use crate::commons::Valid;
-
-use super::*;
-
-// SECTION: analysis interface
-
-// The powerset lattice.  It represents the definitions
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Value(pub Set<ProgramPoint>);
+pub struct TaintValue(pub Set<FuncId>);
 
-impl Display for Value {
+impl Display for TaintValue {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{{")?;
-        let len = self.0.len();
-        for (bb, pp) in self.0.iter().enumerate() {
-            let (bb, n) = match pp {
-                ProgramPoint::Instruction { bb, i } => (bb, i.to_string()),
-                ProgramPoint::Terminal { bb } => (bb, "term".to_owned()),
-            };
-
-            if n == "term" {
-                write!(f, "{bb}.{n}")?;
-            } else {
-                write!(f, "{bb}.{n}, ")?;
-            }
+        let mut srcs: Vec<_> = self.0.iter().collect();
+        srcs.sort_by(|a, b| a.name().cmp(b.name()));
+        for (i, src) in srcs.iter().enumerate() {
+            if i > 0 { write!(f, ", ")? }
+            write!(f, "{}", src.name())?;
         }
         write!(f, "}}")
     }
 }
 
-// Abstract environment
-pub type Env = PointwiseEnv<Value>;
+pub type TaintEnv = PointwiseEnv<TaintValue>;
 
-// Performs the analysis: use `forward_analysis` to implement this.
-pub fn analyze(program: &Valid<Program>, func: FuncId, pts_to: Map<String, Set<String>>) -> (Map<FuncId, FuncId>) {
-    let program = &program.0;
-    let f = &program.functions[&func];
-
-    let init_store = Env::new(Map::new());
-    let mut soln: Map<FuncId, FuncId> = Map::new();
-    forward_analysis(f, &Cfg::new(f, program.globals.clone(), program.structs.clone()), &init_store, &init_store, &mut soln)
-}
-
-// SECTION: analysis implementation
-
-impl AbstractValue for Value {
-    type Concrete = ProgramPoint;
-
-    const BOTTOM: Self = Value(Set::new());
-
-    fn alpha(def: ProgramPoint) -> Self {
-        Value(Set::from([def]))
+impl AbstractValue for TaintValue {
+    type Concrete = FuncId;
+    
+    const BOTTOM: Self = TaintValue(Set::new());
+    
+    fn alpha(src: FuncId) -> Self {
+        let mut set = Set::new();
+        set.insert(src);
+        TaintValue(set)
     }
-
-    fn join(&self, rhs: &Self) -> Value {
-        Value(self.0.union(&rhs.0).cloned().collect())
+    
+    fn join(&self, rhs: &Self) -> Self {
+        TaintValue(self.0.union(&rhs.0).cloned().collect())
     }
 }
 
-fn join_sets(set1: Set<ProgramPoint>, set2: Set<ProgramPoint>) -> Set<ProgramPoint> {
-    set1.union(&set2).cloned().collect()
+// Global state for tracking taint flows
+#[derive(Clone, Debug, Default)]
+struct TaintState {
+    sources: Set<FuncId>,
+    sinks: Set<FuncId>,
+    sink_map: Map<FuncId, Set<FuncId>>
 }
 
-fn get_vars(opset: Vec<&Operand>) -> Set<VarId> {
-    let mut return_set: Set<VarId> = Set::new();
-    for op in opset {
-        if let Operand::Var(v) = op.clone() {
-            return_set.insert(v);
-        }
-    }
-
-    return_set
-}
-
-fn get_reachable(pts_to: Map<String, Set<String>>, v: VarId) -> Set<VarId> {
-    todo!()
-}
-
-impl AbstractEnv for Env {
-    fn join_with(&mut self, rhs: &Self, _block: &BbId, join_type: i64) -> bool {
+impl AbstractEnv for TaintEnv {
+    fn join_with(&mut self, rhs: &Self, _block: &BbId, _join_type: i64) -> bool {
         let mut changed = false;
-
-        for (x, lhs) in self.values.iter_mut() {
-            if let Some(rhs) = rhs.values.get(x) {
-                let old = lhs.clone();
-                *lhs = lhs.join(rhs);
-
-                changed = changed || *lhs != old;
-            }
+        for (x, rhs_val) in &rhs.values {
+            let lhs_val = self.values.entry(x.clone()).or_insert(TaintValue::BOTTOM);
+            let old = lhs_val.clone();
+            *lhs_val = lhs_val.join(rhs_val);
+            changed |= *lhs_val != old;
         }
-
-        for (x, rhs) in &rhs.values {
-            let old = self.get(x);
-            let lhs = old.join(rhs);
-            self.insert(x, &lhs);
-
-            changed = changed || lhs != old;
-        }
-
         changed
     }
 
-    fn analyze_inst(&mut self, inst: &Instruction, cfg: &Cfg, soln: &mut Map<FuncId, FuncId>, store: &mut Map<VarId, Set<FuncId>>) {
-        let this_inst = &self.curr_inst.clone().unwrap();
-        
+    fn analyze_inst(&mut self, inst: &Instruction, cfg: &Cfg) {
         use Instruction::*;
-
-        let mut used_vars: Set<VarId> = Set::new();
-        let mut wdef: Option<Set<VarId>> = None;
-        let this_pp = ProgramPoint::from_instid(this_inst.clone());
-        let def = match inst {
-            AddrOf { lhs, op: _ } => Some(lhs),
-            Alloc { lhs, num, id } => {
-                Some(lhs)
-            },
-            Arith { lhs, aop:_, op1, op2 } => {
-                Some(lhs)
-            },
-            Cmp { lhs, rop:_, op1, op2 } => {
-                Some(lhs)
-            },
+        match inst {
+            Copy { lhs, op } => {
+                if let Operand::Var(v) = op {
+                    let val = self.get(v);
+                    self.values.insert(lhs.clone(), val);
+                }
+            }
+            Load { lhs, src } => {
+                let val = self.get(src);
+                self.values.insert(lhs.clone(), val);
+            }
+            Store { dst, op } => {
+                if let Operand::Var(v) = op {
+                    let val = self.get(v);
+                    self.values.insert(dst.clone(), val);
+                }
+            }
             CallExt { lhs, ext_callee, args } => {
-                if let Some(x) = lhs {
-                    if ext_callee.name().starts_with("src") {
-                        let mut insert_set = Set::new();
-                        insert_set.insert(ext_callee.clone());
-                        store.insert(x.clone(), insert_set);
-
-                        for arg in args {
-                            if let Operand::Var(v) = arg.to_owned() {
-                                store.entry(v).or_default().insert(ext_callee.clone());
-                            }
-                        }
-
-                        println!("inserted to store, src: {}", ext_callee.name());
-                    } else {
-                        store.insert(x.clone(), Set::new());
+                if ext_callee.name().starts_with("src") {
+                    // Source call - taint the result
+                    if let Some(l) = lhs {
+                        self.values.insert(l.clone(), TaintValue::alpha(ext_callee.clone()));
                     }
                 }
-
-                
-                lhs.as_ref()
-            },
-            Copy { lhs, op } => {
-                Some(lhs)
-            },
-            Gep {
-                lhs,
-                src,
-                idx,
-            } => {
-                Some(lhs)
-            },
-            Gfp { lhs, src, field } => {
-                Some(lhs)
-            }, 
-            Load { lhs, src } => {
-                Some(lhs)
-            },
-            Store { dst, op } => {
-                None
-            },
-            Phi { .. } => unreachable!(),
-        };
-
-        // ppvalue
-        let pp_value = &Value(Set::from([this_pp.clone()]));
+            }
+            _ => {}
+        }
     }
 
-    fn analyze_term(&mut self, term: &Terminal, cfg: &Cfg, soln: &mut Map<FuncId, FuncId>, store: &mut Map<VarId, Set<FuncId>>) -> Set<BbId> {
-
-        /*
-            ReachViaArgs = ReachableTypes(type(<arg1>)) ∪ . . . ∪ ReachableTypes(type(<argN>))
-            ReachViaGlobals = ReachableTypes(type(<global1>)) ∪ . . .
-            WDEF = ⋃ {addr_taken[τ] | τ ∈ ReachViaArgs ∪ReachViaGlobals} ∪ Globals
-        */
-        fn calculate_call_wdef(cfg: &Cfg, ops: Set<VarId>) -> Set<VarId> {
-            ops.iter()
-                .map(|x| cfg.reachable_types(&x.typ()))
-                .chain(cfg.globals.iter().map(|x| cfg.reachable_types(&x.typ())))
-                .fold(Set::new(), |acc, x| acc.union(&x).cloned().collect()).iter()
-                .filter_map(|a| cfg.addr_taken.get(a))
-                .flatten()
-                .chain(cfg.globals.iter())
-                .cloned()
-                .collect()
-        }
-
-        fn calculate_call_wdef_debug(cfg: &Cfg, ops: Set<VarId>) -> Set<VarId> {
-            let ops_reachable_types: Vec<Set<Type>> = ops.iter()
-                .map(|x| cfg.reachable_types(&x.typ()))
-                .collect();
-        
-            let globals_reachable_types: Vec<Set<Type>> = cfg.globals.iter()
-                .map(|x| cfg.reachable_types(&x.typ()))
-                .collect();
-        
-            let combined_reachable_types: Vec<Set<Type>> = ops_reachable_types.into_iter()
-                .chain(globals_reachable_types)
-                .collect();
-
-            dbg!(&combined_reachable_types);
-        
-            let folded_reachable_types: Set<Type> = combined_reachable_types.into_iter()
-                .fold(Set::new(), |acc, x| acc.union(&x).cloned().collect());
-
-            dbg!(&folded_reachable_types);
-
-            let filtered_addr_taken: Vec<&VarId> = folded_reachable_types.iter()
-                .filter_map(|a| cfg.addr_taken.get(a))
-                .flatten()
-                .collect();
-        
-            let final_set: Set<VarId> = filtered_addr_taken.into_iter()
-                .chain(cfg.globals.iter())
-                .cloned()
-                .collect();
-        
-            final_set
-        }
+    fn analyze_term(&mut self, term: &Terminal, cfg: &Cfg) -> Set<BbId> {
         use Terminal::*;
-
-        let mut used_vars: Set<VarId> = Set::new();
-        let mut wdef: Option<Set<VarId>> = None;
-        let this_pp = ProgramPoint::from(self.curr_inst.clone().unwrap().0, None);
-        let def = match term {
-            CallDirect { lhs, callee, args, next_bb } => {
-                let call_wdef = calculate_call_wdef(cfg, get_vars(args.iter().collect()));
-                // {<arg>|<arg> is a variable}
-                used_vars.extend(get_vars(args.iter().collect()).iter().cloned());
-                // CALL_WDEF
-                used_vars.extend(call_wdef.iter().cloned());
-
-                wdef = Some(call_wdef.clone());
-
-                lhs.as_ref()
-            },
-            CallIndirect { lhs, callee, args, next_bb } => {
-                let call_wdef = calculate_call_wdef(cfg, get_vars(args.iter().collect()));
-                // {fp}
-                used_vars.insert(callee.clone());
-                // {<arg>|<arg> is a variable}
-                used_vars.extend(get_vars(args.iter().collect()).iter().cloned());
-                // CALL_WDEF
-                used_vars.extend(call_wdef.iter().cloned());
-
-                wdef = Some(call_wdef.clone());
-
-                lhs.as_ref()
-            },
-            Branch { cond, .. } => {
-                used_vars = get_vars(vec![cond]);
-                None
-            },
-            Ret(Some(op)) => {
-                used_vars = get_vars(vec![op]);
-                None
-            },
-            _ => None,
-        };
-
-        // skip branch
-        // remnants from value analysis
-        // and i quote, "Because we don’t do a value analysis, we consider both branches as viable when analyzing a $branch instruction."
-        Set::new() 
+        match term {
+            CallDirect { lhs, callee: _, args, next_bb: _ }
+            | CallIndirect { lhs, callee: _, args, next_bb: _ } => {
+                if let Some(l) = lhs {
+                    let mut combined = TaintValue::BOTTOM;
+                    for arg in args {
+                        if let Operand::Var(v) = arg {
+                            let val = self.get(v);
+                            combined = combined.join(&val);
+                        }
+                    }
+                    self.values.insert(l.clone(), combined);
+                }
+            }
+            _ => {}
+        }
+        Set::new()
     }
 
-    fn analyze_bb(&self, bb: &BasicBlock, cfg: &Cfg, soln: &mut Map<FuncId, FuncId>, store: &mut Map<VarId, Set<FuncId>>) -> (Vec<Self>, Set<BbId>) {
-        let mut v = vec![];
-        let mut s = self.clone();
+    fn analyze_bb(&self, bb: &BasicBlock, cfg: &Cfg) -> (Vec<Self>, Set<BbId>) {
+        let mut states = vec![];
+        let mut curr_state = self.clone();
 
         for (i, inst) in bb.insts.iter().enumerate() {
-            s.curr_inst = Some((bb.id.clone(), i));
-            s.analyze_inst(inst, cfg, soln, store);
-            v.push(s.clone());
+            curr_state.curr_inst = Some((bb.id.clone(), i));
+            curr_state.analyze_inst(inst, cfg);
+            states.push(curr_state.clone());
         }
 
-        s.curr_inst = Some((bb.id.clone(), bb.insts.len()));
-        s.analyze_term(&bb.term, cfg, soln, store);
-        v.push(s.clone());
-        (v, Set::new())
+        curr_state.curr_inst = Some((bb.id.clone(), bb.insts.len()));
+        curr_state.analyze_term(&bb.term, cfg);
+        states.push(curr_state);
+
+        (states, Set::new())
     }
+}
+
+// Helper function to collect sources and sinks from program
+fn collect_external_funcs(func: &Function) -> (Set<FuncId>, Set<FuncId>) {
+    let mut sources = Set::new();
+    let mut sinks = Set::new();
+
+    for bb in func.body.values() {
+        for inst in &bb.insts {
+            if let Instruction::CallExt { ext_callee, .. } = inst {
+                if ext_callee.name().starts_with("src") {
+                    sources.insert(ext_callee.clone());
+                } else if ext_callee.name().starts_with("snk") {
+                    sinks.insert(ext_callee.clone());
+                }
+            }
+        }
+    }
+
+    (sources, sinks)
+}
+
+pub fn analyze(program: &Valid<Program>, func: FuncId, pts_to: Map<String, Set<String>>) -> String {
+    let function = &program.0.functions[&func];
+    let (sources, sinks) = collect_external_funcs(function);
     
+    let mut taint_state = TaintState {
+        sources,
+        sinks: sinks.clone(),
+        sink_map: Map::new()
+    };
+
+    // Initialize environment with explicit type annotation
+    // We specify TaintValue as the type parameter since that's our concrete implementation
+    let taint_env: PointwiseEnv<TaintValue> = PointwiseEnv {
+        values: Map::new(),
+        curr_inst: None
+    };
+
+    let cfg = Cfg::new(function, program.0.globals.clone(), program.0.structs.clone());
+    
+    // Add explicit type parameter to forward_analysis call
+    forward_analysis::<TaintEnv>(
+        function,
+        &cfg,
+        &taint_env,
+        &taint_env
+    );
+
+    // Rest of the formatting code remains the same...
+    let mut result = String::new();
+    let mut sorted_sinks: Vec<_> = taint_state.sinks.iter().collect();
+    sorted_sinks.sort_by(|a, b| a.name().cmp(b.name()));
+
+    for sink in sorted_sinks {
+        if let Some(sources) = taint_state.sink_map.get(sink) {
+            let mut sorted_sources: Vec<_> = sources.iter().collect();
+            sorted_sources.sort_by(|a, b| a.name().cmp(b.name()));
+            
+            result.push_str(&format!("{} -> {{", sink.name()));
+            result.push_str(&sorted_sources.iter().map(|s| s.name()).collect::<Vec<_>>().join(", "));
+            result.push_str("}\n");
+        }
+    }
+
+    result.trim().to_string()
 }
