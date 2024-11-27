@@ -7,7 +7,7 @@ use optimization::middle_end::constraints::*;
 use constraint_solve::solve;
 
 pub fn main() {
-    run_test();
+    run();
 }
 
 fn run() {
