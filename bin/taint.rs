@@ -17,7 +17,7 @@ pub fn run() {
     let mut target = args[3].split('#'); // <function>#<basicblock>#{<index> | term}
     let pts_to_path = &args[4];
     let function = target.next().unwrap();
-    let basicblock = target.next().unwrap();
+    // let basicblock = target.next().unwrap();
     let idx = target.next().unwrap();
 
     let idx = match idx {
