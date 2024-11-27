@@ -24,7 +24,7 @@ pub fn run() {
         "term" => None,
         _ => Some(idx.parse::<usize>().unwrap())
     };
-    let pts_to_path = "./test-inputs-taint/tainted01.lir.ptsto";
+    // let pts_to_path = "./test-inputs-taint/tainted01.lir.ptsto";
     let output = taint_lir(lir_file_name, function, pts_to_path);
     println!("{output}");
 }
