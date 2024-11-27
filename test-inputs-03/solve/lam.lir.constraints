@@ -1,0 +1,17 @@
+f <= main.func
+f.x <= f.z
+g <= main.func
+g.y <= g.z
+lam_[(&int,&int)->int](f,f.x,f.y) <= f
+lam_[(&int,&int)->int](g,g.x,g.y) <= g
+main._t3 <= f.x
+main._t4 <= f.y
+main._t5 <= g.x
+main._t6 <= g.y
+main.func <= lam_[(&int,&int)->int](_DUMMY,main.p,main.q)
+ref(_alloc1,_alloc1) <= main.p
+ref(_alloc2,_alloc2) <= main.q
+ref(a,a) <= main._t3
+ref(b,b) <= main._t4
+ref(c,c) <= main._t5
+ref(d,d) <= main._t6

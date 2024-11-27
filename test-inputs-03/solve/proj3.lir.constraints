@@ -1,0 +1,6 @@
+main.y <= proj(ref,1,r)
+main.z <= main.y
+main.z <= r
+proj(ref,1,main.p) <= main.z
+ref(_a1,_a1) <= main.z
+ref(a,a) <= main.y

@@ -1,0 +1,9 @@
+b <= x
+main._t1 <= b
+main._t2 <= y
+p <= q
+q <= p
+ref(_alloc1,_alloc1) <= q
+ref(a,a) <= main._t1
+ref(b,b) <= main._t2
+y <= p

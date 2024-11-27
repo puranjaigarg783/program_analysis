@@ -29,3 +29,15 @@ path = "bin/control.rs"
 [[bin]]
 name = "slice"
 path = "bin/slice.rs"
+
+[[bin]]
+name = "taint"
+path = "bin/taint.rs"
+
+[[bin]]
+name = "constraint_gen"
+path = "bin/constraints_gen.rs"
+
+[[bin]]
+name = "constraint_solve"
+path = "bin/constraints_solve.rs"

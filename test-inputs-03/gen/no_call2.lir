@@ -1,0 +1,25 @@
+// note: the control flow doesn't matter but which function each instruction is does matter (for naming variables).
+
+x:int
+r: &&int
+
+fn foo(x:int, y:&int) -> _ {
+let p: &&int, q: &int, r: &&int
+entry:
+  y = $alloc 10 [a1]
+  r = $gep p 10
+  $store p y
+  q = $load p
+  $ret
+}
+
+fn main() -> int {
+let p: &&int, q: &int, y: &int
+entry:
+  y = $addrof x
+  $store p y
+  q = $load p
+  p = $copy r
+  $ret x
+}
+

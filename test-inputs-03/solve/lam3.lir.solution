@@ -1,0 +1,161 @@
+_alloc1 -> {_alloc1, _alloc3, _alloc4, _alloc5}
+_alloc2 -> {_alloc4}
+_alloc3 -> {_alloc1, _alloc2, _alloc3, _alloc8, _alloc9}
+_alloc4 -> {_alloc8, _alloc9}
+_alloc6 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+_alloc7 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+add -> {add}
+add._t1 -> {_alloc2}
+add._t2 -> {_alloc2}
+add._t3 -> {_alloc2}
+add.t -> {_alloc2}
+add.t1 -> {_alloc4}
+add.t2 -> {_alloc4}
+apply -> {apply}
+apply._t1 -> {_alloc1}
+apply._t2 -> {_alloc1}
+apply._t3 -> {_alloc1}
+apply.t -> {_alloc1}
+apply.t1 -> {_alloc1, _alloc3, _alloc4}
+apply.t2 -> {_alloc1, _alloc3, _alloc4, _alloc5}
+bind -> {bind}
+bind._t1 -> {_alloc6}
+bind._t2 -> {_alloc6}
+bind._t3 -> {_alloc6}
+bind.e -> {_alloc6}
+bind.env -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+bind.v -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+bind.x -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+const -> {const}
+const._t1 -> {_alloc5}
+const._t2 -> {_alloc5}
+const.t -> {_alloc5}
+eval -> {eval}
+eval._ret58 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t1 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t10 -> {_alloc7}
+eval._t11 -> {_alloc7}
+eval._t12 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t14 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t17 -> {_alloc7}
+eval._t18 -> {_alloc7}
+eval._t19 -> {_alloc7}
+eval._t20 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t21 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t22 -> {_alloc7}
+eval._t23 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t24 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t25 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t28 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t29 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t30 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t31 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t32 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t33 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t34 -> {_alloc7}
+eval._t35 -> {_alloc7}
+eval._t36 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t38 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t4 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t41 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t44 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t45 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t46 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t47 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t48 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t49 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t5 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t50 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t51 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t52 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t53 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t54 -> {_alloc6}
+eval._t55 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t56 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t57 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t6 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval._t7 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval.env -> {_alloc10, _alloc6}
+eval.t -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval.v -> {_alloc7}
+eval.v1 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+eval.v2 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+init -> {init}
+lambda -> {lambda}
+lambda._t1 -> {_alloc3}
+lambda._t2 -> {_alloc3}
+lambda._t3 -> {_alloc3}
+lambda.t -> {_alloc3}
+lambda.t1 -> {_alloc1, _alloc2, _alloc3}
+lambda.x -> {_alloc8, _alloc9}
+lookup -> {lookup}
+lookup._ret11 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup._t2 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup._t3 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup._t5 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup._t6 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup._t7 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup._t8 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup.env -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+lookup.x -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+main._t1 -> {_alloc8}
+main._t10 -> {_alloc3}
+main._t11 -> {_alloc3}
+main._t12 -> {_alloc4}
+main._t13 -> {_alloc4}
+main._t14 -> {_alloc2}
+main._t15 -> {_alloc3}
+main._t16 -> {_alloc1}
+main._t17 -> {_alloc5}
+main._t18 -> {_alloc1}
+main._t19 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+main._t3 -> {_alloc9}
+main._t5 -> {_alloc4}
+main._t6 -> {_alloc4}
+main._t7 -> {_alloc4}
+main._t8 -> {_alloc1}
+main._t9 -> {_alloc1}
+main.apply2 -> {_alloc3}
+main.double -> {_alloc3}
+main.env -> {_alloc10}
+main.t -> {_alloc1}
+main.x -> {_alloc8}
+main.y -> {_alloc9}
+printE -> {printE}
+printE._t10 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t11 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t12 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t14 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t18 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t21 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t22 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t23 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t24 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t25 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t28 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t29 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t30 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t32 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t33 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t34 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t37 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t4 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE._t7 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printE.t -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printI -> {printI}
+printV -> {printV}
+printV._t11 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t12 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t13 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t15 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t16 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t3 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t6 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV._t9 -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+printV.v -> {_alloc1, _alloc10, _alloc2, _alloc3, _alloc4, _alloc5, _alloc6, _alloc7, _alloc8, _alloc9}
+var -> {var}
+var._t1 -> {_alloc4}
+var._t2 -> {_alloc4}
+var.t -> {_alloc4}
+var.x -> {_alloc8, _alloc9}
+

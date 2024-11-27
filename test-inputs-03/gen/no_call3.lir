@@ -1,0 +1,23 @@
+// note: the control flow doesn't matter but which function each instruction is does matter (for naming variables).
+
+struct st {
+  f1: int
+  f2: &int
+}
+
+a:int
+r: &&int
+
+fn main() -> int {
+let x:int, y: &int, z: &st, p: &&st
+entry:
+  z = $alloc 1 [_a1]
+  y = $addrof a
+  $store y x
+  y = $gfp z f1
+  r = $gfp z f2
+  $store r y
+  z = $load p
+  $ret 0
+}
+

@@ -1,0 +1,8 @@
+foo.p <= foo.r
+foo.y <= proj(ref,1,foo.p)
+main.y <= proj(ref,1,main.p)
+proj(ref,1,foo.p) <= foo.q
+proj(ref,1,main.p) <= main.q
+r <= main.p
+ref(a1,a1) <= foo.y
+ref(x,x) <= main.y

@@ -1,0 +1,5 @@
+c -> {_alloc1}
+f._t3 -> {f.x}
+f.y -> {f.x}
+main._t2 -> {f.x}
+

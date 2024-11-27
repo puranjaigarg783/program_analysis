@@ -1,0 +1,8 @@
+b <= f.y
+f._t3 <= f.y
+f.y <= main._t2
+f.z <= f._t1
+main._t1 <= f.z
+proj(ref,1,c) <= main._t1
+ref(_alloc1,_alloc1) <= c
+ref(f.x,f.x) <= f._t3

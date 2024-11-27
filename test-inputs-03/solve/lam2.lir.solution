@@ -1,0 +1,12 @@
+f -> {f}
+f.x -> {_alloc1}
+f.y -> {_alloc2}
+g -> {g}
+g.x -> {_alloc1}
+g.y -> {_alloc2}
+main._t2 -> {_alloc1, _alloc2}
+main.func -> {f, g}
+main.p -> {_alloc1}
+main.q -> {_alloc2}
+main.r -> {_alloc1, _alloc2}
+

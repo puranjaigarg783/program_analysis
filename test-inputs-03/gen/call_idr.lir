@@ -1,0 +1,59 @@
+a:int
+b:int
+c:int
+d:int
+f:&(&int, &int) -> int
+g:&(&int, &int) -> int
+
+extern random:() -> int
+
+fn f(x:&int, y:&int) -> int {
+let _t1:int, z:&int
+entry:
+  z = $copy x
+  _t1 = $load z
+  $ret _t1
+}
+
+fn g(x:&int, y:&int) -> int {
+let _t1:int, z:&int
+entry:
+  z = $copy y
+  _t1 = $load z
+  $ret _t1
+}
+
+fn main() -> int {
+let _t1:int, _t2:int, _t3:&int, _t4:&int, _t5:&int, _t6:&int, func:&(&int, &int) -> int, p:&int, q:&int, r:int
+bb1:
+  _t2 = $call_idr func(p, q) then bb4
+
+bb2:
+  func = $copy f
+  $jump bb1
+
+bb3:
+  func = $copy g
+  $jump bb1
+
+bb4:
+  r = $copy _t2
+  _t3 = $addrof a
+  _t4 = $addrof b
+  $call_dir f(_t3, _t4) then bb5
+
+bb5:
+  _t5 = $addrof c
+  _t6 = $addrof d
+  $call_dir g(_t5, _t6) then bb6
+
+bb6:
+  $ret r
+
+entry:
+  p = $alloc 1 [_alloc1]
+  q = $alloc 1 [_alloc2]
+  _t1 = $call_ext random()
+  $branch _t1 bb2 bb3
+}
+

@@ -1,0 +1,8 @@
+b -> {a}
+main._t1 -> {a}
+main._t2 -> {b}
+p -> {_alloc1, b}
+q -> {_alloc1, b}
+x -> {a}
+y -> {b}
+
