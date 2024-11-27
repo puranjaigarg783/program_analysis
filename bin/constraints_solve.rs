@@ -24,7 +24,7 @@ fn run() {
 fn run_test() {
     let constraint_file_name = "./test-inputs-03/solve/no_proj.lir.constraints";
     let constraint_file_name = "./test-inputs-03/solve/proj4.lir.constraints";
-    let constraint_file_name = "./test-inputs-03/solve/failed/01.lir.constraints";
+    // let constraint_file_name = "./test-inputs-03/solve/failed/01.lir.constraints";
 
     let input_string = read_from(constraint_file_name);
 
