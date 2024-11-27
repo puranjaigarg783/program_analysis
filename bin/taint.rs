@@ -13,21 +13,25 @@ use optimization::middle_end::constraints::*;
 pub fn run() {
     let args: Vec<String> = env::args().collect();
 
-    let lir_file_name = &args[1];
-    let mut target = args[3].split('#'); // <function>#<basicblock>#{<index> | term}
-    let pts_to_path = &args[4];
-    let function = target.next().unwrap();
-    // let basicblock = target.next().unwrap();
-    // let idx = target.next().unwrap();
+    if args.len() < 5 {
+        eprintln!("Usage: {} <lir_file> <json_file> <pts_to_file> <context-sensitivity>", args[0]);
+        std::process::exit(1);
+    }
 
-    // let idx = match idx {
-    //     "term" => None,
-    //     _ => Some(idx.parse::<usize>().unwrap())
-    // };
-    // let pts_to_path = "./test-inputs-taint/tainted01.lir.ptsto";
-    let output = taint_lir(lir_file_name, function, pts_to_path);
+    let lir_file_name = &args[1];
+    let json_file_name = &args[2]; // Not used in your code but required for submission
+    let pts_to_path = &args[3];
+    let context_sensitivity = &args[4];
+
+    // Since you're not using the function name from command-line, you can set it to "main" or adjust as needed
+    let function_name = "main";
+
+    // If you need to handle context sensitivity, you can pass `context_sensitivity` to `taint_lir`
+    let output = taint_lir(lir_file_name, function_name, pts_to_path);
+
     println!("{output}");
 }
+
 
 pub fn run_test() {
 
