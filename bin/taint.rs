@@ -50,7 +50,7 @@ fn taint_lir(lir_file_name: &str, function_name: &str, pts_to_path: &str) -> Str
 
 fn main() {
 
-    run_test();
+    run();
 
 }
 
